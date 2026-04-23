@@ -61,6 +61,10 @@ export default function Timer({ onSessionComplete }: TimerProps) {
       Notification.requestPermission();
     }
 
+    if (mode === "idle") {
+      setMode("focus");
+    }
+
     setIsRunning(true);
     setShowComplete(false);
     intervalRef.current = setInterval(() => {
@@ -72,7 +76,7 @@ export default function Timer({ onSessionComplete }: TimerProps) {
         return prev - 1;
       });
     }, 1000);
-  }, [clearTimer]);
+  }, [clearTimer, mode]);
 
   const pauseTimer = useCallback(() => {
     setIsRunning(false);
