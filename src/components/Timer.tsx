@@ -226,22 +226,26 @@ export default function Timer({ onSessionComplete }: TimerProps) {
 
       {/* Controls */}
       <div className="flex items-center gap-3">
-        {!isRunning ? (
-          <button
-            onClick={startTimer}
-            className="flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary/90 transition-colors shadow-sm"
-          >
-            <Play className="w-5 h-5" />
-            {mode === "idle" ? "Start Focus" : "Resume"}
-          </button>
-        ) : (
-          <button
-            onClick={pauseTimer}
-            className="flex items-center gap-2 px-6 py-3 bg-muted text-foreground rounded-xl font-medium hover:bg-muted/80 transition-colors"
-          >
-            <Pause className="w-5 h-5" />
-            Pause
-          </button>
+        {!showComplete && (
+          <>
+            {!isRunning ? (
+              <button
+                onClick={startTimer}
+                className="flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-xl font-medium hover:bg-primary/90 transition-colors shadow-sm"
+              >
+                <Play className="w-5 h-5" />
+                {mode === "idle" ? "Start Focus" : "Resume"}
+              </button>
+            ) : (
+              <button
+                onClick={pauseTimer}
+                className="flex items-center gap-2 px-6 py-3 bg-muted text-foreground rounded-xl font-medium hover:bg-muted/80 transition-colors"
+              >
+                <Pause className="w-5 h-5" />
+                Pause
+              </button>
+            )}
+          </>
         )}
 
         <button
