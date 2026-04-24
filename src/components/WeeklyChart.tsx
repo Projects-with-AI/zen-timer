@@ -87,8 +87,8 @@ export default function WeeklyChart({ sessions }: WeeklyChartProps) {
               {data.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
-                  fill={entry.isToday ? "#10b981" : "#e2e8f0"}
-                  className={entry.isToday ? "" : "hover:fill-slate-300 transition-colors"}
+                  fill={entry.sessions > 0 ? "#10b981" : "#e2e8f0"}
+                  className={entry.sessions > 0 ? "" : "hover:fill-slate-300 transition-colors"}
                 />
               ))}
             </Bar>
