@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Timer as TimerIcon, TrendingUp, Calendar } from "lucide-react";
 import Timer from "@/components/Timer";
 import StreakView from "@/components/StreakView";
@@ -63,14 +63,18 @@ export default function Home() {
     fetchSessions();
   }, [fetchSessions]);
 
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editValue, setEditValue] = useState("");
+  const editInputRef = useRef<HTMLInputElement>(null);
+
   const handleSessionComplete = useCallback(
-    async (durationMinutes: number) => {
+    async (durationMinutes: number, label?: string) => {
       const newSession: Session = {
         id: crypto.randomUUID(),
         date: new Date().toISOString().split("T")[0],
         durationMinutes,
         completedAt: new Date().toISOString(),
-        label: "Focus Session",
+        label: label?.trim() || "Focus Session",
       };
 
       // Always save to localStorage first
@@ -100,6 +104,43 @@ export default function Home() {
     },
     []
   );
+
+  const handleLabelSave = useCallback(
+    async (id: string) => {
+      const trimmed = editValue.trim();
+      if (!trimmed) {
+        setEditingId(null);
+        return;
+      }
+
+      setSessions((prev) => {
+        const updated = prev.map((s) =>
+          s.id === id ? { ...s, label: trimmed } : s
+        );
+        saveLocalSessions(updated);
+        return updated;
+      });
+      setEditingId(null);
+
+      try {
+        await fetch("/api/sessions", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, label: trimmed }),
+        });
+      } catch {
+        // localStorage already updated
+      }
+    },
+    [editValue]
+  );
+
+  useEffect(() => {
+    if (editingId && editInputRef.current) {
+      editInputRef.current.focus();
+      editInputRef.current.select();
+    }
+  }, [editingId]);
 
   return (
     <main className="min-h-screen bg-background">
@@ -193,7 +234,30 @@ export default function Home() {
                   >
                     <div className="flex items-center gap-3">
                       <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                      <span className="font-medium">{session.label || "Focus Session"}</span>
+                      {editingId === session.id ? (
+                        <input
+                          ref={editInputRef}
+                          value={editValue}
+                          onChange={(e) => setEditValue(e.target.value)}
+                          onBlur={() => handleLabelSave(session.id)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") handleLabelSave(session.id);
+                            if (e.key === "Escape") setEditingId(null);
+                          }}
+                          className="px-2 py-1 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30 w-48"
+                        />
+                      ) : (
+                        <span
+                          className="font-medium cursor-pointer hover:text-primary transition-colors"
+                          onClick={() => {
+                            setEditingId(session.id);
+                            setEditValue(session.label || "Focus Session");
+                          }}
+                          title="Click to rename"
+                        >
+                          {session.label || "Focus Session"}
+                        </span>
+                      )}
                     </div>
                     <div className="flex items-center gap-4 text-muted-foreground">
                       <span>{session.durationMinutes} min</span>

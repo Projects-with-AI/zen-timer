@@ -8,7 +8,7 @@ const DEFAULT_FOCUS_MINUTES = 30;
 const DEFAULT_BREAK_MINUTES = 5;
 
 interface TimerProps {
-  onSessionComplete: (durationMinutes: number) => void;
+  onSessionComplete: (durationMinutes: number, label?: string) => void;
 }
 
 type TimerMode = "focus" | "break" | "idle";
@@ -18,6 +18,7 @@ export default function Timer({ onSessionComplete }: TimerProps) {
   const [secondsLeft, setSecondsLeft] = useState(DEFAULT_FOCUS_MINUTES * 60);
   const [isRunning, setIsRunning] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [sessionLabel, setSessionLabel] = useState("");
   const [showComplete, setShowComplete] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -93,6 +94,7 @@ export default function Timer({ onSessionComplete }: TimerProps) {
     setMode("idle");
     setSecondsLeft(DEFAULT_FOCUS_MINUTES * 60);
     setShowComplete(false);
+    setSessionLabel("");
   }, [clearTimer]);
 
   const startBreak = useCallback(
@@ -100,6 +102,7 @@ export default function Timer({ onSessionComplete }: TimerProps) {
       setMode("break");
       setSecondsLeft(DEFAULT_BREAK_MINUTES * 60);
       setShowComplete(false);
+      setSessionLabel("");
       clearTimer();
       if (autoStart) {
         runTimer();
@@ -134,7 +137,8 @@ export default function Timer({ onSessionComplete }: TimerProps) {
       playNotification();
 
       if (mode === "focus") {
-        onSessionComplete(DEFAULT_FOCUS_MINUTES);
+        onSessionComplete(DEFAULT_FOCUS_MINUTES, sessionLabel.trim() || undefined);
+        setSessionLabel("");
       }
     }
   }, [secondsLeft, isRunning, mode, clearTimer, playNotification, onSessionComplete]);
@@ -177,6 +181,19 @@ export default function Timer({ onSessionComplete }: TimerProps) {
           Break
         </button>
       </div>
+
+      {/* Session Label Input */}
+      {(mode === "focus" || mode === "idle") && !isRunning && (
+        <div className="w-full max-w-xs">
+          <input
+            type="text"
+            value={sessionLabel}
+            onChange={(e) => setSessionLabel(e.target.value)}
+            placeholder="What are you focusing on?"
+            className="w-full px-3 py-2 text-sm bg-background border border-border rounded-lg placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-colors"
+          />
+        </div>
+      )}
 
       {/* Timer Circle */}
       <div className="relative w-64 h-64">

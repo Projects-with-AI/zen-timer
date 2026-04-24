@@ -47,3 +47,21 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json(session, { status: 201 });
 }
+
+export async function PUT(request: NextRequest) {
+  const body = await request.json();
+  const { id, label } = body;
+  if (!id || typeof label !== "string") {
+    return NextResponse.json({ error: "Missing id or label" }, { status: 400 });
+  }
+
+  const sessions = await readSessions();
+  const index = sessions.findIndex((s) => s.id === id);
+  if (index === -1) {
+    return NextResponse.json({ error: "Session not found" }, { status: 404 });
+  }
+
+  sessions[index].label = label;
+  await writeSessions(sessions);
+  return NextResponse.json(sessions[index]);
+}
