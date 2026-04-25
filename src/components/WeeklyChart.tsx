@@ -45,9 +45,9 @@ export default function WeeklyChart({ sessions }: WeeklyChartProps) {
     for (let i = 6; i >= 0; i--) {
       const d = new Date(today);
       d.setDate(d.getDate() - i);
-      const dateStr = d.toISOString().split("T")[0];
+      const dateStr = d.toLocaleDateString("en-CA");
       const count = sessions.filter(
-        (s) => new Date(s.completedAt).toISOString().split("T")[0] === dateStr
+        (s) => new Date(s.completedAt).toLocaleDateString("en-CA") === dateStr
       ).length;
       const isToday = i === 0;
 

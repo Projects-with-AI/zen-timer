@@ -12,5 +12,19 @@
     "durationMinutes": 30,
     "completedAt": "2026-04-23T03:52:15.527Z",
     "label": "Focus Session"
+  },
+  {
+    "id": "ccfa0218-c493-480f-801a-8739dcaf198b",
+    "date": "2026-04-24",
+    "durationMinutes": 30,
+    "completedAt": "2026-04-24T11:57:16.958Z",
+    "label": "Wyoming - PH Nurse LT101 Flow"
+  },
+  {
+    "id": "98fcddc5-487a-4974-b007-054ef46c80d2",
+    "date": "2026-04-24",
+    "durationMinutes": 30,
+    "completedAt": "2026-04-24T13:26:59.277Z",
+    "label": "Focus Session"
   }
 ]
