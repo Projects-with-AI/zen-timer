@@ -138,7 +138,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-background">
       {/* Header */}
-      <header className="border-b bg-card/50 backdrop-blur-sm sticky top-0 z-10">
+      <header className="border-b bg-background/80 backdrop-blur-md sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-4 flex flex-col items-center justify-center text-center">
           <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center mb-1">
             <TimerIcon className="w-5 h-5 text-primary-foreground" />
