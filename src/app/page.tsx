@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
-import { Timer as TimerIcon, TrendingUp, Calendar } from "lucide-react";
+import { Timer as TimerIcon } from "lucide-react";
 import Timer from "@/components/Timer";
 import StreakView from "@/components/StreakView";
 import WeeklyChart from "@/components/WeeklyChart";
@@ -136,41 +136,37 @@ export default function Home() {
   }, [editingId]);
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-[radial-gradient(120%_120%_at_50%_0%,hsl(var(--muted))_0%,hsl(var(--background))_46%)]">
       {/* Header */}
-      <header className="border-b bg-background/80 backdrop-blur-md sticky top-0 z-10">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex flex-col items-center justify-center text-center">
-          <div className="w-9 h-9 bg-primary rounded-lg flex items-center justify-center mb-1">
+      <header className="sticky top-0 z-20 border-b border-border/60 bg-background/85 backdrop-blur-xl">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col items-center justify-center text-center">
+          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center mb-2 shadow-sm">
             <TimerIcon className="w-5 h-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-lg font-bold leading-tight">Zen Timer</h1>
-            <p className="text-xs text-muted-foreground">Build momentum, one session at a time</p>
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight leading-tight">Zen Timer</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">Build momentum, one session at a time</p>
           </div>
         </div>
       </header>
 
-      <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-10 space-y-6">
         {/* Timer Section */}
-        <section className="bg-card border rounded-2xl p-6 md:p-8 shadow-sm">
+        <section className="rounded-3xl border border-border/70 bg-card/90 p-5 sm:p-8 shadow-[0_16px_40px_rgba(15,23,42,0.08)]">
           <Timer onSessionComplete={handleSessionComplete} />
         </section>
 
         {/* Error Banner */}
         {error && (
-          <div className="bg-amber-50 border border-amber-200 text-amber-800 px-4 py-3 rounded-xl text-sm">
+          <div className="border border-amber-200/80 bg-amber-50/80 text-amber-800 px-4 py-3 rounded-2xl text-sm">
             {error}
           </div>
         )}
 
         {/* Dashboard Grid */}
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid gap-6 lg:grid-cols-2">
           {/* Streak View */}
-          <section className="bg-card border rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center gap-2 mb-4">
-              <TrendingUp className="w-5 h-5 text-primary" />
-              <h2 className="text-xl font-semibold">Activity</h2>
-            </div>
+          <section className="rounded-3xl border border-border/70 bg-card/90 p-5 sm:p-6 shadow-[0_10px_28px_rgba(15,23,42,0.06)]">
             {loading ? (
               <div className="animate-pulse space-y-3">
                 <div className="h-4 bg-muted rounded w-3/4" />
@@ -182,11 +178,7 @@ export default function Home() {
           </section>
 
           {/* Weekly Chart */}
-          <section className="bg-card border rounded-2xl p-6 shadow-sm">
-            <div className="flex items-center gap-2 mb-4">
-              <Calendar className="w-5 h-5 text-primary" />
-              <h2 className="text-xl font-semibold">Weekly Overview</h2>
-            </div>
+          <section className="rounded-3xl border border-border/70 bg-card/90 p-5 sm:p-6 shadow-[0_10px_28px_rgba(15,23,42,0.06)]">
             {loading ? (
               <div className="animate-pulse space-y-3">
                 <div className="h-4 bg-muted rounded w-3/4" />
@@ -199,8 +191,8 @@ export default function Home() {
         </div>
 
         {/* Recent Sessions */}
-        <section className="bg-card border rounded-2xl p-6 shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">Recent Sessions</h2>
+        <section className="rounded-3xl border border-border/70 bg-card/90 p-5 sm:p-6 shadow-[0_10px_28px_rgba(15,23,42,0.06)]">
+          <h2 className="text-lg font-semibold tracking-tight mb-4">Recent Sessions</h2>
           {loading ? (
             <div className="animate-pulse space-y-2">
               {[1, 2, 3].map((i) => (
@@ -219,9 +211,9 @@ export default function Home() {
                 .map((session) => (
                   <div
                     key={session.id}
-                    className="flex items-center justify-between px-4 py-3 bg-muted/50 rounded-lg text-sm"
+                    className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between px-4 py-3 bg-muted/50 hover:bg-muted/70 transition-colors rounded-2xl text-sm"
                   >
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
                       <div className="w-2 h-2 rounded-full bg-emerald-500" />
                       {editingId === session.id ? (
                         <input
@@ -233,11 +225,11 @@ export default function Home() {
                             if (e.key === "Enter") handleLabelSave(session.id);
                             if (e.key === "Escape") setEditingId(null);
                           }}
-                          className="px-2 py-1 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30 w-48"
+                          className="px-2 py-1 text-sm bg-background border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/30 w-full sm:w-48"
                         />
                       ) : (
                         <span
-                          className="font-medium cursor-pointer hover:text-primary transition-colors"
+                          className="font-medium cursor-pointer hover:text-primary transition-colors truncate"
                           onClick={() => {
                             setEditingId(session.id);
                             setEditValue(session.label || "Focus Session");
@@ -248,7 +240,7 @@ export default function Home() {
                         </span>
                       )}
                     </div>
-                    <div className="flex items-center gap-4 text-muted-foreground">
+                    <div className="flex items-center gap-3 text-xs sm:text-sm text-muted-foreground">
                       <span>{session.durationMinutes} min</span>
                       <span className="text-xs">
                         {new Date(session.completedAt).toLocaleDateString("en-US", {

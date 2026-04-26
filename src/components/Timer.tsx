@@ -155,16 +155,16 @@ export default function Timer({ onSessionComplete }: TimerProps) {
   const progress = totalSeconds > 0 ? ((totalSeconds - secondsLeft) / totalSeconds) * 100 : 0;
 
   return (
-    <div className="flex flex-col items-center gap-6 w-full max-w-md mx-auto">
+    <div className="flex flex-col items-center gap-6 sm:gap-7 w-full max-w-lg mx-auto">
       {/* Mode Selector */}
-      <div className="flex gap-2 bg-muted p-1 rounded-lg">
+      <div className="inline-flex gap-1 bg-muted/80 p-1 rounded-xl border border-border/60">
         <button
           onClick={() => startFocus()}
           className={cn(
-            "px-4 py-2 rounded-md text-sm font-medium transition-colors",
+            "px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200",
             mode === "focus" || mode === "idle"
               ? "bg-primary text-primary-foreground shadow-sm"
-              : "text-muted-foreground hover:text-foreground"
+              : "text-muted-foreground hover:text-foreground hover:bg-background/70"
           )}
         >
           Focus
@@ -172,10 +172,10 @@ export default function Timer({ onSessionComplete }: TimerProps) {
         <button
           onClick={() => startBreak()}
           className={cn(
-            "px-4 py-2 rounded-md text-sm font-medium transition-colors",
+            "px-5 py-2 rounded-lg text-sm font-medium transition-all duration-200",
             mode === "break"
               ? "bg-primary text-primary-foreground shadow-sm"
-              : "text-muted-foreground hover:text-foreground"
+              : "text-muted-foreground hover:text-foreground hover:bg-background/70"
           )}
         >
           Break
@@ -184,19 +184,19 @@ export default function Timer({ onSessionComplete }: TimerProps) {
 
       {/* Session Label Input */}
       {(mode === "focus" || mode === "idle") && !isRunning && (
-        <div className="w-full max-w-xs">
+        <div className="w-full max-w-sm">
           <input
             type="text"
             value={sessionLabel}
             onChange={(e) => setSessionLabel(e.target.value)}
             placeholder="What are you focusing on?"
-            className="w-full px-3 py-2 text-sm bg-background border border-border rounded-lg placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-colors"
+            className="w-full px-3.5 py-2.5 text-sm bg-background/80 border border-border/70 rounded-xl placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/40 transition-colors"
           />
         </div>
       )}
 
       {/* Timer Circle */}
-      <div className="relative w-64 h-64">
+      <div className="relative w-60 h-60 sm:w-72 sm:h-72">
         <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
           <circle
             cx="50"
@@ -204,7 +204,7 @@ export default function Timer({ onSessionComplete }: TimerProps) {
             r="45"
             fill="none"
             stroke="currentColor"
-            strokeWidth="6"
+            strokeWidth="5"
             className="text-muted"
           />
           <circle
@@ -213,7 +213,7 @@ export default function Timer({ onSessionComplete }: TimerProps) {
             r="45"
             fill="none"
             stroke="currentColor"
-            strokeWidth="6"
+            strokeWidth="5"
             strokeLinecap="round"
             strokeDasharray={`${2 * Math.PI * 45}`}
             strokeDashoffset={`${2 * Math.PI * 45 * (1 - progress / 100)}`}
@@ -224,10 +224,10 @@ export default function Timer({ onSessionComplete }: TimerProps) {
           />
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-5xl font-bold tabular-nums tracking-tight">
+          <span className="text-5xl sm:text-6xl font-semibold tabular-nums tracking-tight">
             {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
           </span>
-          <span className="text-sm text-muted-foreground mt-1 capitalize">
+          <span className="text-sm text-muted-foreground mt-1 capitalize tracking-wide">
             {mode === "idle" ? "Ready to focus" : mode === "focus" ? "Focus time" : "Break time"}
           </span>
         </div>
@@ -235,14 +235,14 @@ export default function Timer({ onSessionComplete }: TimerProps) {
 
       {/* Completion Message */}
       {showComplete && (
-        <div className="flex items-center gap-2 text-emerald-600 bg-emerald-50 px-4 py-2 rounded-full text-sm font-medium">
+        <div className="flex items-center gap-2 text-emerald-700 bg-emerald-50/80 border border-emerald-200/70 px-4 py-2 rounded-full text-sm font-medium">
           <CheckCircle2 className="w-4 h-4" />
           {mode === "focus" ? "Session complete! Take a break." : "Break over! Ready to focus?"}
         </div>
       )}
 
       {/* Controls */}
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-3">
         {!showComplete && (
           <>
             {!isRunning ? (
@@ -262,7 +262,7 @@ export default function Timer({ onSessionComplete }: TimerProps) {
             ) : (
               <button
                 onClick={pauseTimer}
-                className="flex items-center gap-2 px-6 py-3 bg-muted text-foreground rounded-xl font-medium hover:bg-muted/80 transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-muted/90 text-foreground rounded-xl font-medium hover:bg-muted transition-colors"
               >
                 <Pause className="w-5 h-5" />
                 Pause
@@ -274,7 +274,7 @@ export default function Timer({ onSessionComplete }: TimerProps) {
         {!showComplete && (
           <button
             onClick={resetTimer}
-            className="flex items-center gap-2 px-4 py-3 bg-muted text-foreground rounded-xl font-medium hover:bg-muted/80 transition-colors"
+            className="flex items-center gap-2 px-4 py-3 bg-muted/90 text-foreground rounded-xl font-medium hover:bg-muted transition-colors"
             title="Reset"
           >
             <RotateCcw className="w-5 h-5" />
@@ -284,10 +284,10 @@ export default function Timer({ onSessionComplete }: TimerProps) {
         <button
           onClick={() => setSoundEnabled(!soundEnabled)}
           className={cn(
-            "flex items-center gap-2 px-4 py-3 rounded-xl font-medium transition-colors",
+            "flex items-center gap-2 px-4 py-3 rounded-xl font-medium transition-colors border border-transparent",
             soundEnabled
-              ? "bg-muted text-foreground hover:bg-muted/80"
-              : "bg-muted text-muted-foreground hover:bg-muted/80"
+              ? "bg-muted/90 text-foreground hover:bg-muted"
+              : "bg-muted/70 text-muted-foreground hover:bg-muted"
           )}
           title={soundEnabled ? "Mute" : "Unmute"}
         >
@@ -298,7 +298,7 @@ export default function Timer({ onSessionComplete }: TimerProps) {
       {mode === "focus" && showComplete && (
         <button
           onClick={() => startBreak(true)}
-          className="flex items-center gap-2 px-5 py-2.5 bg-amber-100 text-amber-700 rounded-lg font-medium hover:bg-amber-200 transition-colors text-sm"
+          className="flex items-center gap-2 px-5 py-2.5 bg-amber-100 text-amber-700 rounded-xl border border-amber-200 font-medium hover:bg-amber-200 transition-colors text-sm"
         >
           <Coffee className="w-4 h-4" />
           Start 5-min Break
@@ -308,7 +308,7 @@ export default function Timer({ onSessionComplete }: TimerProps) {
       {mode === "break" && showComplete && (
         <button
           onClick={() => startFocus(true)}
-          className="flex items-center gap-2 px-5 py-2.5 bg-emerald-100 text-emerald-700 rounded-lg font-medium hover:bg-emerald-200 transition-colors text-sm"
+          className="flex items-center gap-2 px-5 py-2.5 bg-emerald-100 text-emerald-700 rounded-xl border border-emerald-200 font-medium hover:bg-emerald-200 transition-colors text-sm"
         >
           <Play className="w-4 h-4" />
           Start Focus Session

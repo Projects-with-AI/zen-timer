@@ -73,38 +73,38 @@ export default function StreakView({ sessions }: StreakViewProps) {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Your Streak</h2>
-        <div className="flex items-center gap-1.5 text-amber-600 bg-amber-50 px-3 py-1 rounded-full text-sm font-medium">
+        <h2 className="text-lg font-semibold tracking-tight">Your Streak</h2>
+        <div className="flex items-center gap-1.5 text-amber-700 bg-amber-50/80 border border-amber-200/70 px-3 py-1 rounded-full text-sm font-medium">
           <Zap className="w-4 h-4" />
           {streak} day{streak !== 1 ? "s" : ""}
         </div>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
-        <div className="bg-card border rounded-xl p-3 text-center">
-          <div className="text-2xl font-bold text-foreground">{todayCount}</div>
+      <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
+        <div className="bg-background/70 border border-border/80 rounded-2xl p-3 text-center">
+          <div className="text-2xl font-semibold tracking-tight text-foreground">{todayCount}</div>
           <div className="text-xs text-muted-foreground">Today</div>
         </div>
-        <div className="bg-card border rounded-xl p-3 text-center">
-          <div className="text-2xl font-bold text-foreground">{totalSessions}</div>
+        <div className="bg-background/70 border border-border/80 rounded-2xl p-3 text-center">
+          <div className="text-2xl font-semibold tracking-tight text-foreground">{totalSessions}</div>
           <div className="text-xs text-muted-foreground">Total</div>
         </div>
-        <div className="bg-card border rounded-xl p-3 text-center">
-          <div className="text-2xl font-bold text-foreground">{streak}</div>
+        <div className="bg-background/70 border border-border/80 rounded-2xl p-3 text-center">
+          <div className="text-2xl font-semibold tracking-tight text-foreground">{streak}</div>
           <div className="text-xs text-muted-foreground">Streak</div>
         </div>
       </div>
 
       {/* Day Strip */}
-      <div className="flex gap-1.5 justify-between">
+      <div className="flex gap-1.5 sm:gap-2 justify-between">
         {days.map((day) => (
           <div key={day.date} className="flex flex-col items-center gap-1.5 flex-1">
             <div
               className={cn(
-                "w-full aspect-square rounded-lg transition-all duration-300 relative",
+                "w-full aspect-square rounded-xl transition-all duration-300 relative",
                 getIntensityClass(day.count),
                 day.isToday && "ring-2 ring-primary ring-offset-2"
               )}

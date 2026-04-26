@@ -17,7 +17,7 @@ function SessionTooltip({ active, payload }: TooltipProps<number, string>) {
   if (active && payload && payload.length) {
     const value = payload[0].value as number;
     return (
-      <div className="bg-slate-800 text-white text-sm px-3 py-2 rounded-lg shadow-lg">
+      <div className="border border-border/70 bg-background/95 backdrop-blur px-3 py-2 rounded-xl shadow-xl text-sm text-foreground">
         <span className="font-semibold">{value}</span> focus session{value !== 1 ? "s" : ""}
       </div>
     );
@@ -58,7 +58,7 @@ export default function WeeklyChart({ sessions }: WeeklyChartProps) {
 
   return (
     <div className="space-y-3">
-      <h2 className="text-lg font-semibold">Last 7 Days</h2>
+      <h2 className="text-lg font-semibold tracking-tight">Last 7 Days</h2>
       <div className="h-48 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
